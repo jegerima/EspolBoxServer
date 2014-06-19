@@ -4,6 +4,7 @@ ServerThread::ServerThread(qintptr ID, QObject *parent):
     QThread(parent)
 {
     this->scktDescriptor = ID;
+    txtp = new textparser("");
 }
 
 void ServerThread::run()
@@ -36,7 +37,8 @@ void ServerThread::readyRead()
 
     qDebug() << "IDClient: " << scktDescriptor << ".Data in: " << data;
 
-    sckt->write(data);
+    txtp->parse(data);
+    //sckt->write(data);
 }
 
 void ServerThread::disconnected()
@@ -45,3 +47,10 @@ void ServerThread::disconnected()
     sckt->deleteLater();
     exit(0);
 }
+
+/*void ServerThread::SendString(QString qs)
+{
+    sckt->write(QStringToChar(qs));
+}*/
+
+

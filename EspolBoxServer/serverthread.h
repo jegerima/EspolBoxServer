@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QDebug>
+#include <textparser.h>
+#include <libs.h>
 
 class ServerThread : public QThread
 {
@@ -14,6 +16,7 @@ public:
 
 signals:
     void error(QTcpSocket::SocketError scktError);
+    //void SendString(QString qs);
 
 public slots:
     void readyRead();
@@ -21,6 +24,7 @@ public slots:
 
 private:
     QTcpSocket *sckt;
+    textparser *txtp;
     int scktDescriptor;
 };
 

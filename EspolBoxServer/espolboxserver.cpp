@@ -16,8 +16,6 @@ EspolBoxServer::EspolBoxServer(QObject *parent) :
         qDebug() << "Server Started!";
     }
     */
-
-
 }
 
 void EspolBoxServer::StartServer()
@@ -33,16 +31,6 @@ void EspolBoxServer::StartServer()
         qDebug() << "Listening... Port: " << port;
         //incomingConnection(1);
     }
-    /*
-    QTcpSocket *sckt = sv->nextPendingConnection();
-
-    sckt->write("hello client\r\n");
-    sckt->flush();
-
-    sckt->waitForBytesWritten(3000);
-
-    sckt->close();
-    */
 
     this->nextPendingConnection();
 }

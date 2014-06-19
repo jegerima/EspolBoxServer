@@ -18,8 +18,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     espolboxserver.cpp \
-    serverthread.cpp
+    serverthread.cpp \
+    file.cpp \
+    libs.cpp \
+    textparser.cpp
 
 HEADERS += \
     espolboxserver.h \
-    serverthread.h
+    serverthread.h \
+    file.h \
+    libs.h \
+    textparser.h
