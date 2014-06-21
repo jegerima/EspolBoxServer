@@ -4,6 +4,7 @@ ServerThread::ServerThread(qintptr ID, QObject *parent):
     QThread(parent)
 {
     this->scktDescriptor = ID;
+    this->FileIN = false;
     txtp = new textparser("");
 }
 
@@ -33,12 +34,20 @@ void ServerThread::run()
 
 void ServerThread::readyRead()
 {
+    int LetsFile = 0;
     QByteArray data = sckt->readAll();
 
-    qDebug() << "IDClient: " << scktDescriptor << ".Data in: " << data;
+    LetsFile = txtp->parse(data);
 
-    txtp->parse(data);
-    //sckt->write(data);
+    if(LetsFile == 2)
+        this->FileIN = true;
+    if(LetsFile == 3)
+        this->FileIN = false;
+
+    if(!FileIN)
+        qDebug() << "IDClient: " << scktDescriptor << ".Data in: " << data;
+    else
+        qDebug() << "File IN: " << data;
 }
 
 void ServerThread::disconnected()

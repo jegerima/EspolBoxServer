@@ -9,90 +9,39 @@ textparser::textparser(QString txt)
 
 int textparser::parse(QString txt)
 {
-    QRegularExpression espolboxc("espolboxc .*");
-    QRegularExpressionMatch match = espolboxc.match(txt);
-    if(match.hasMatch())
+    QStringList argsList = txt.split(" ");
+
+    if(argsList.at(0) == "cuser")      // cuser usuario hash
+        return createUser(argsList.at(1));
+    if(argsList.at(0) == "sync")       // sync usuario /ruta/del/archivo
+        return syncDir(argsList.at(1), argsList.at(2));
+    if(argsList.at(0) == "setboxdir")  // setboxdir usuario nombreCarpeta
+        return setBoxDir(argsList.at(1),argsList.at(2));
+    if(argsList.at(0) == "syncDONE")
     {
-        return firstParam(txt);
+        qDebug() << "NO MAS ARCHIVOS";
+        return 3;
     }
-    else
-    {
-        if(txt == (QString("exit")))
-            return -1;
-
-        if(txt == (QString("help")))
-        {
-            qDebug() << "Ayuda no disponible";
-            return 0;
-        }
-
-        qDebug("Comando invalido.");
-        return 0;
-    }
-
+    //Default
+    qDebug() << "Text not parsed";
     return 0;
 }
 
-int textparser::firstParam(QString txt)
+int textparser::createUser(QString usr)
 {
-    QRegularExpression cuser(".* -cuser (\\w+).*");
-    QRegularExpression user(".* -user (\\w+).*");
-    QRegularExpressionMatch fstmatch = cuser.match(txt);
-    QRegularExpressionMatch scdmatch = user.match(txt);
-    if(fstmatch.hasMatch())
-    {
-        QString cuser = fstmatch.captured(1);
-        qDebug() <<"-cuser "+cuser;
-
-        file f;
-        f.newDirectory(cuser);
-        //cs->SendString(txt);
-        return 1;
-    }
-    if(scdmatch.hasMatch())
-    {
-        QString user = scdmatch.captured(1);
-        qDebug() << user;
-        return secondParam(txt);
-    }
-    qDebug("Digite el parametro correctamente");
+    qDebug() << "User "+usr+" created.";
     return 0;
-
 }
 
-int textparser::secondParam(QString txt)
+int textparser::setBoxDir(QString usr, QString dir)
 {
-    QRegularExpression setboxdir(".* -setboxdir (\\w+)");
-    QRegularExpression syncbox(".* -syncbox (\\w+)");
-    QRegularExpression autosynbox(".* -autosyncbox (\\w+)");
-    QRegularExpressionMatch stbxdr = setboxdir.match(txt);
-    QRegularExpressionMatch sncbx = syncbox.match(txt);
-    QRegularExpressionMatch tsncbx = autosynbox.match(txt);
-
-    if(stbxdr.hasMatch())
-    {
-        QString boxdir = stbxdr.captured(1);
-        qDebug() << "Lanzando funcion -setboxdir " + boxdir;
-        //cs->SendString(txt);
-        return 1;
-    }
-
-    if(sncbx.hasMatch())
-    {
-        QString sync = sncbx.captured(1);
-        qDebug() << sync;
-        //cs->SendString(txt);
-        return 1;
-
-    }
-
-    if(tsncbx.hasMatch())
-    {
-        QString boxdir = stbxdr.captured(1);
-        qDebug() << boxdir;
-        //cs->SendString(txt);
-        return 1;
-    }
-    qDebug("Digite el parametro correctamente");
+    qDebug() << "Dir "+dir+" setted for user "+usr;
     return 0;
 }
+
+int textparser::syncDir(QString usr, QString pth)
+{
+    qDebug() << "Sync "+pth+ "for user "+usr;
+    return 2;
+}
+

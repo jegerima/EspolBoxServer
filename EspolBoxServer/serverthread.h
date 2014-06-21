@@ -26,6 +26,7 @@ private:
     QTcpSocket *sckt;
     textparser *txtp;
     int scktDescriptor;
+    bool FileIN;
 };
 
 #endif // SERVERTHREAD_H

@@ -29,9 +29,7 @@ void EspolBoxServer::StartServer()
     else
     {
         qDebug() << "Listening... Port: " << port;
-        //incomingConnection(1);
     }
-
     this->nextPendingConnection();
 }
 
