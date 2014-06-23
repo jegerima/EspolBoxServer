@@ -21,11 +21,15 @@ SOURCES += main.cpp \
     serverthread.cpp \
     file.cpp \
     libs.cpp \
-    textparser.cpp
+    textparser.cpp \
+    serialfile.cpp \
+    ebfile.cpp
 
 HEADERS += \
     espolboxserver.h \
     serverthread.h \
     file.h \
     libs.h \
-    textparser.h
+    textparser.h \
+    serialfile.h \
+    ebfile.h

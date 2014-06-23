@@ -1,5 +1,4 @@
 #include "textparser.h"
-#include <file.h>
 #include <QDebug>
 
 textparser::textparser(QString txt)
@@ -9,7 +8,7 @@ textparser::textparser(QString txt)
 
 int textparser::parse(QString txt)
 {
-    QStringList argsList = txt.split(" ");
+    QStringList argsList = txt.split("#");
 
     if(argsList.at(0) == "cuser")      // cuser usuario hash
         return createUser(argsList.at(1));
@@ -41,7 +40,7 @@ int textparser::setBoxDir(QString usr, QString dir)
 
 int textparser::syncDir(QString usr, QString pth)
 {
-    qDebug() << "Sync "+pth+ "for user "+usr;
+    qDebug() << "Sync "+pth+ " for user "+usr;
     return 2;
 }
 

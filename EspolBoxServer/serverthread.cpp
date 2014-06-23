@@ -47,7 +47,7 @@ void ServerThread::readyRead()
     if(!FileIN)
         qDebug() << "IDClient: " << scktDescriptor << ".Data in: " << data;
     else
-        qDebug() << "File IN: " << data;
+        generateFiles(data);
 }
 
 void ServerThread::disconnected()

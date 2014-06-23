@@ -1,6 +1,8 @@
 #include "file.h"
 #include <QDebug>
 
+//http://stackoverflow.com/questions/13835197/serializing-my-custom-class-in-qt
+
 file::file()
 {
 }

@@ -20,7 +20,7 @@ EspolBoxServer::EspolBoxServer(QObject *parent) :
 
 void EspolBoxServer::StartServer()
 {
-    int port = 1023;
+    int port = 1022;
 
     if(!this->listen(QHostAddress::Any,port))
     {
