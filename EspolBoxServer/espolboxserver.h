@@ -16,13 +16,16 @@ public:
     explicit EspolBoxServer(QObject *parent = 0);
     void StartServer();
 
+
 signals:
 
 public slots:
     //void incomingConnection(int scktID);
 
 private:
-   // QTcpServer *sv;
+   QStringList Users;
+
+
 
 protected:
     void incomingConnection(qintptr scktID);

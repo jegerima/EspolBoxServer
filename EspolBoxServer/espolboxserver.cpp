@@ -3,24 +3,13 @@
 EspolBoxServer::EspolBoxServer(QObject *parent) :
     QTcpServer(parent)
 {
-    /*
-    sv = new QTcpServer(this);
-    connect(sv,SIGNAL(newConnection()),SLOT(newConnection()));
+    getUsers();
 
-    if(!sv->listen(QHostAddress::Any,1021))
-    {
-        qDebug() << "Server could not start!";
-    }
-    else
-    {
-        qDebug() << "Server Started!";
-    }
-    */
 }
 
 void EspolBoxServer::StartServer()
 {
-    int port = 1022;
+    int port = 1042;
 
     if(!this->listen(QHostAddress::Any,port))
     {
@@ -40,4 +29,7 @@ void EspolBoxServer::incomingConnection(qintptr scktID)
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 }
+
+//---------------------------------------
+
 

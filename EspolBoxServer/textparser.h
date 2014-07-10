@@ -1,14 +1,17 @@
 #ifndef TEXTPARSER_H
 #define TEXTPARSER_H
 
-
+#include <QObject>
 #include <QString>
 #include <QRegularExpression>
 #include <QThread>
 #include <QStringList>
 
+#include "libs.h"
+
 class textparser
 {
+
 public:
     textparser(QString txt);
     int parse(QString txt);

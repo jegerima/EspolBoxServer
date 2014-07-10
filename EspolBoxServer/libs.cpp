@@ -4,6 +4,9 @@
 QString CURRENT_DIR;
 QString CURRENT_USER;
 QString RELATIVE_DIR;
+QByteArray FileData;
+QStringList Users;
+
 int xyz = 0;
 
 
@@ -64,40 +67,141 @@ QString getRELATIVE_DIR()
     return RELATIVE_DIR;
 }
 
-void generateFiles(QByteArray ba)
+void gettingFilesBytes(QByteArray ba)
 {
+    qDebug() << "SIZE DATA ARRIVED :" + QString::number(ba.size());
+    FileData.append(ba);
+    qDebug() << "Listo";
 /*
-    //QHash<QString,QString> FileProp;
-    QString a;
-    a.setNum(xyz);
-
-    qDebug() << getCURRENT_DIR();
-    QFile tmp(getCURRENT_DIR() + "/tmp"+a+".JPG");
-    tmp.open(QIODevice::WriteOnly);
-    tmp.write(ba);
-    tmp.close();
-
-    QFile archivo(tmp.fileName());
-    archivo.open(QIODevice::WriteOnly);
-    archivo.write(ba);
-    //QThread::msleep(500);
-    archivo.close();
-
-    //QDataStream in(&tmp);
-    //in>>FileProp;
-
-    //if(FileProp.isEmpty())
-    //    qDebug() << "Hash Vacio";
-    //qDebug() << "Nombre: "+FileProp.value("NAME");
-    //qDebug() << "Relative dir: "+FileProp.value("RELATIVEDIR");
-
-    //qDebug("---------------------------------");
-    xyz++;
-*/
-    QList<QByteArray> baList = ba.split('#');
+    for(int i = 0; i<baList.size(); i++)
+    {
+        baa = baList.at(i);
+        baFile = baa.split('%');
+        if(baFile.size()<2)
+            return;
+        qDebug() << "NAME: " + baFile.at(0);
+        qDebug() << "DIR: " + baFile.at(1);
+        qDebug() << "BYTES: " + QString::number(baFile.at(2).size());
+    }
+    /*
     QString Fname(baList.at(0));
     qDebug() << "NAME: "+ Fname;
     QString Fdir(baList.at(1));
     qDebug() << "DIR: " + Fdir;
-    qDebug() << "DATA: " + baList.at(2);
+    qDebug() << "BYTES: " + QString::number(baList.at(2).size());
+    qDebug() << "Saving File "+Fname;
+    QFile fl(getCURRENT_DIR() + Fdir + "/"+ Fname);
+    fl.open(QIODevice::WriteOnly);
+    fl.write(baList.at(2));
+    //QThread::msleep(1000);
+    fl.close();
+    qDebug() << "File saved in " + getCURRENT_DIR() + Fdir + "/" + Fname;
+    //qDebug() << "DATA: " + baList.at(2);
+    */
+}
+
+void generateFiles()
+{
+
+    QList<QByteArray> PacketsList = FileData.split('~');
+    QList<QByteArray> File;// = PacketsList.at(0).split('%');
+    qDebug() << "Paquetes: "+QString::number(PacketsList.size()-1);
+    for(int i = 0; i<(PacketsList.size()-1);i++)
+    {
+        File = PacketsList.at(i).split('%');
+        //qDebug() << "Tokens: " + QString::number(File.size());
+        if(File.size()==4)
+        {
+            /* 0 Usuario
+             * 1 RutaRelativa
+             * 2 NombreArchivo
+             * 3 Data
+             */
+            qDebug() << "Archivo " + File.at(2) + " en " + File.at(1) + " de " + File.at(0);
+            QString FullPath(getCURRENT_DIR()+"/"+ File.at(0) + File.at(1) +"/"+ File.at(2));
+            qDebug() << FullPath;
+            QFile tmp(FullPath);
+            tmp.open(QIODevice::WriteOnly);
+            tmp.write(File.at(3));
+            tmp.close();
+        }
+        else
+            qDebug() << PacketsList.at(i);
+    }
+    resetFileData();
+}
+
+int getFileDataSize()
+{
+    return FileData.size();
+}
+
+void resetFileData()
+{
+    FileData.clear();
+}
+
+QStringList getDirectoryDirs(QString dir)
+{
+    QDir dirFiles(dir);
+    QStringList allDirs = dirFiles.entryList(QDir::NoDotAndDotDot | QDir::AllDirs);
+    return allDirs;
+}
+
+void getUsers()
+{
+    Users = getDirectoryDirs(getCURRENT_DIR());
+}
+
+bool UserExists(QString name)
+{
+    getUsers();
+    for(int i = 0; i < Users.size(); i++)
+    {
+        if(name == Users.at(i))
+            return true;
+    }
+    return false;
+}
+
+int newDirectory(QString str)
+{
+    if(PathExists(str) == -1)
+    {
+        //http://linux.die.net/man/2/stat
+
+        mkdir(QStringToChar(str),0700);
+        printf("Directorio creado exitosamente\n");
+        return 1;
+    }
+    else
+    {
+        printf("Directorio existente\n");
+    }
+    return 0;
+}
+
+int newUser(QString str)
+{
+    QString splbxPath = getCURRENT_DIR() + "/" + str;
+    qDebug() << splbxPath;
+
+    if(PathExists(splbxPath) == -1)
+    {
+        //http://linux.die.net/man/2/stat
+
+        mkdir(QStringToChar(splbxPath),0700);
+        printf("Directorio creado exitosamente\n");
+        return 1;
+    }
+    else
+    {
+        printf("Directorio existente\n");
+    }
+    return 0;
+}
+
+void addUser(QString usr)
+{
+    Users.append(usr);
 }

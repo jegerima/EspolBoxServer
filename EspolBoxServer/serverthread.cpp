@@ -39,15 +39,44 @@ void ServerThread::readyRead()
 
     LetsFile = txtp->parse(data);
 
+
+
     if(LetsFile == 2)
+    {
         this->FileIN = true;
-    if(LetsFile == 3)
+        qDebug() << "setboxdir#GO";
+        sckt->write("#setboxdir#go");
+        return;
+    }
+    if(LetsFile==-2)
+    {
         this->FileIN = false;
+        qDebug() << getFileDataSize();
+        generateFiles();
+        qDebug() << "SetBoxDir#Sync#Done";
+        return;
+    }
+    if(LetsFile==-4)
+    {
+        sckt->write("#setboxdir#nouser");
+    }
+    if(LetsFile==5)
+    {
+        sckt->write("#cuser#ok");
+    }
+    if(LetsFile==-5)
+    {
+        sckt->write("#cuser#fail");
+    }
+    if(LetsFile==-6)
+    {
+        sckt->write("#setboxdir#exists");
+    }
 
     if(!FileIN)
-        qDebug() << "IDClient: " << scktDescriptor << ".Data in: " << data;
+        qDebug() << "IDClient: " << scktDescriptor << " Data in: " << data;
     else
-        generateFiles(data);
+        gettingFilesBytes(data);
 }
 
 void ServerThread::disconnected()
