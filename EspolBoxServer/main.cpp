@@ -5,7 +5,10 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    setCURRENT_DIR("/home/jegerima/Server");
+    QString homePath = getenv("HOME");
+    homePath = homePath + "/ESPOLBOXSERVER";
+    newDirectory(homePath);
+    setCURRENT_DIR(homePath);
     EspolBoxServer msv;
     msv.StartServer();
 
